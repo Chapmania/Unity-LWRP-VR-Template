@@ -9,8 +9,7 @@ public class SimpleTeleport : MonoBehaviour
     private Camera _camera;
 
     InputDevice leftHand;
-    int countDown = 1000;
-    bool isCounting = false;
+    private float update;
 
     void Start()
     {
@@ -34,19 +33,14 @@ public class SimpleTeleport : MonoBehaviour
         // Grab value, quick and dirty, no error checking
         leftHand.TryGetFeatureValue(CommonUsages.trigger, out myTrigger);
 
-        if (myTrigger > 0.1 && isCounting == false)
+        update += Time.deltaTime;
+        if (update > 1.0f)
         {
-            Shoot();
-            isCounting = true;
-        }
+            update = 0.0f;
 
-        if (isCounting == true)
-        {
-            countDown = - 1;
-            if (countDown < 0)
+            if (myTrigger > 0.1)
             {
-                countDown = 1000;
-                isCounting = false;
+                Shoot();
             }
         }
     }
